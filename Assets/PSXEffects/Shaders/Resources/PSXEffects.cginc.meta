@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f3a12d822ec273d4e8cd2fef7badfc9f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Shaders/Resources/PSXEffects.cginc
+  uploadId: 507728

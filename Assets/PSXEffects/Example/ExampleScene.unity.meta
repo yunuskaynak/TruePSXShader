@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4733022af8884f346b2f79ddb381c796
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Example/ExampleScene.unity
+  uploadId: 507728

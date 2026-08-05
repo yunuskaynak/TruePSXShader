@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 378c15c65ab74e745ba888511f861635
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Editor/SCWindow.cs
+  uploadId: 507728

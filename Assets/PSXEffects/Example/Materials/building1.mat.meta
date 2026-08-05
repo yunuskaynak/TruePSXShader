@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bdabeb2cdbed7984cae99e4ad51e96fd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Example/Materials/building1.mat
+  uploadId: 507728

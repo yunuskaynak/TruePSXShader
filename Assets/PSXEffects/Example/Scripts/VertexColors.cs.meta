@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0b7c44b14b1376d4cbbcf1fb8e77d738
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Example/Scripts/VertexColors.cs
+  uploadId: 507728

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c2343cb83154e7f4096389e336e1c2fe
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Example/Materials/Red.mat
+  uploadId: 507728

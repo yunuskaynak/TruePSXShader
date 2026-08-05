@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3d5d1ed9e2204494b8f6ffe02e4c8e97
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Prefabs/PSXEffects.prefab
+  uploadId: 507728

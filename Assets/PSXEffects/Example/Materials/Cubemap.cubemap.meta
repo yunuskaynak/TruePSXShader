@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e794795176816674bb26b7a56095b8ea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 8900000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 132368
+  packageName: PSXEffects
+  packageVersion: 1.18.4
+  assetPath: Assets/PSXEffects/Example/Materials/Cubemap.cubemap
+  uploadId: 507728
