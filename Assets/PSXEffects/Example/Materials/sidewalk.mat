@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _PSX_DIFF_VERTEX
+  - _PSX_DIFF_FRAGMENT
   - _PSX_SPEC_GOURAUD
   m_InvalidKeywords:
   - DEPTH_WRITE
@@ -24,8 +24,9 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -116,7 +117,7 @@ Material:
     - _NormalMapDepth: 1
     - _NormalStrength: 1
     - _OcclusionStrength: 1
-    - _PSX_DIFF: 0
+    - _PSX_DIFF: 1
     - _PSX_SPEC: 0
     - _Parallax: 0.02
     - _RenderMode: 0

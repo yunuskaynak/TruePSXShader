@@ -34,7 +34,20 @@ Shader "Hidden/PSX/PostProcess"
             float4 _PSX_PostParams1;  // x = scanline siddeti, y = dikey scanline, z = interlace, w = kare paritesi
             float4 _PSX_PostParams2;  // x = CRT bombe, y = vignette, z = favorRed, w = depth var mi
 
-            // Orijinal PS1 GPU 4x4 dither matrisi
+            // ------------------------------------------------------------
+            //  Orijinal PS1 GPU 4x4 dither matrisi (psx-spx)
+            //
+            //  Donanim algoritmasi, kanal basina bagimsiz:
+            //    offset = M[y & 3][x & 3]
+            //    v8     = clamp(color8 + offset, 0, 255)   // ONCE doyur
+            //    v5     = v8 / 8                           // sonra tam sayi bolme
+            //
+            //  Genlik yalnizca +-4/255, yani bir 5-bit adiminin yarisi.
+            //  Cogu "PS1 shader"i 5-10 kat fazla siddette Bayer matrisi
+            //  kullanir; bu matris gercek donanim degerleridir.
+            //  3. ve 4. satirlar 1. ve 2. satirlarin 2 piksel yatay
+            //  kaydirilmis halidir (Bayer DEGILDIR).
+            // ------------------------------------------------------------
             static const float PSX_DITHER[16] =
             {
                 -4.0,  0.0, -3.0,  1.0,
@@ -60,18 +73,32 @@ Shader "Hidden/PSX/PostProcess"
                     border = (uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) ? 1.0 : 0.0;
                 }
 
-                half3 col = SAMPLE_TEXTURE2D_X(_BlitTexture, psx_point_clamp_sampler, uv).rgb;
-                col = saturate(col);
+                half4 src = SAMPLE_TEXTURE2D_X(_BlitTexture, psx_point_clamp_sampler, uv);
+                half3 col = saturate(src.rgb);
 
-                // Islemler orijinaldeki gibi gamma (sRGB) uzayinda yapilir
+                // Alpha kanali PSX/Lit'ten gelen dither uygunluk maskesini
+                // tasir (1 = gouraud/modulasyonlu -> dither'lanir,
+                // 0 = ham doku / duz golge -> donanimda dither YOK).
+                // Kamera formatinda alpha yoksa 1 okunur ve eski davranis
+                // (her seyi dither'la) aynen korunur.
+                bool materialSkipsDither = src.a < 0.5;
+
+                // Islemler orijinaldeki gibi gamma (sRGB) uzayinda yapilir.
+                // PS1 framebuffer'i hicbir zaman lineer degildi; dither'i
+                // lineer uzayda uygulamak yanlis kontrastta desen uretir.
             #if !defined(UNITY_COLORSPACE_GAMMA)
                 col = LinearToSRGB(col);
             #endif
 
                 // --- Subtraction fade (PS1 ekran kararmasi) ---
+                // PS1 yari-saydamlik modu 2 (B - F) ile duz bir renk cikarmak
+                // oyunlarin standart fade-to-black yontemiydi. Dogrudan
+                // cikarma kullanilir: fade = 0.5 -> yarim yol, fade = 1 -> siyah.
+                // (Eski formul col -= (3.0 - col) * fade idi; fade = 0.5'te bile
+                // her seyi siyaha goturdugu icin pratikte kullanilamiyordu.)
                 float fade = _PSX_PostParams0.w;
                 if (fade > 0.0)
-                    col -= (3.0 - col) * fade;
+                    col = saturate(col - fade);
 
                 // --- Darken darks / favor red (PS1 aydinlatma tonu) ---
                 float favorRed = _PSX_PostParams2.z;
@@ -82,7 +109,10 @@ Shader "Hidden/PSX/PostProcess"
                 }
                 col = saturate(col);
 
-                // Sanal dusuk cozunurluk piksel koordinati
+                // Sanal dusuk cozunurluk piksel koordinati.
+                // Dither donanimda VRAM piksel koordinatiyla indekslenir, bu
+                // yuzden tam cozunurluk ekran pikseli DEGIL, emule edilen
+                // dusuk cozunurluk pikseli kullanilmalidir.
                 float2 pix = floor(uv * _PSX_TargetRes.xy);
 
                 // --- Scanline ---
@@ -104,14 +134,14 @@ Shader "Hidden/PSX/PostProcess"
                 }
 
                 // --- Gokyuzu maskesi (istege bagli dither haric tutma) ---
-                bool skipDither = false;
+                bool skipDither = materialSkipsDither;
                 if (_PSX_PostParams0.z < 0.5 && _PSX_PostParams2.w > 0.5)
                 {
                     float raw = SAMPLE_TEXTURE2D_X(_PSX_DepthTex, psx_point_clamp_sampler, uv).r;
                 #if UNITY_REVERSED_Z
-                    skipDither = raw <= 0.000001;
+                    skipDither = skipDither || (raw <= 0.000001);
                 #else
-                    skipDither = raw >= 0.999999;
+                    skipDither = skipDither || (raw >= 0.999999);
                 #endif
                 }
 
@@ -119,7 +149,7 @@ Shader "Hidden/PSX/PostProcess"
                 float bits = clamp(_PSX_PostParams0.x, 1.0, 8.0);
                 float ditherI = _PSX_PostParams0.y;
                 float divisor = exp2(8.0 - bits);           // 5 bit icin 8
-                float levels = exp2(bits) - 1.0;
+                float levels = exp2(bits) - 1.0;            // 5 bit icin 31
 
                 float3 c255 = col * 255.0;
                 if (ditherI > 0.0 && !skipDither)
@@ -127,8 +157,12 @@ Shader "Hidden/PSX/PostProcess"
                     int2 m = int2(pix) & 3;
                     int idx = m.y * 4 + m.x;
                     float d = PSX_DITHER[idx];
+                    // divisor/8 katsayisi matrisi diger bit derinliklerine
+                    // olceklendirir; 5 bitte 1.0'dir (donanim degeri).
                     c255 += d * (divisor / 8.0) * ditherI;
                 }
+                // clamp(floor(c/8), 0, 31) ile floor(clamp(c,0,255)/8) ozdestir
+                // (floor monoton oldugu icin) - donanim sirasiyla ayni sonuc.
                 col = clamp(floor(c255 / divisor), 0.0, levels) / levels;
 
                 // --- Vignette ---

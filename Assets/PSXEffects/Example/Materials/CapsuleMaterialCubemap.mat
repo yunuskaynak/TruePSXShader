@@ -24,6 +24,7 @@ Material:
   - _DRAWDISTINFLUENCE_ON
   - _DRAWDIST_ON
   - _EMISSION
+  - _METALUNLIT_ON
   - _SPECMODEL_GOURAUD
   - _VERTEXCOLORS_ON
   m_LightmapFlags: 2
@@ -81,6 +82,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -100,6 +105,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AffineOverride: -1
+    - _AffineShading: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _CubeAmount: 1
@@ -117,17 +123,22 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LODAmt: 0
-    - _Metallic: 0
+    - _MetalUnlit: 1
+    - _Metallic: 1
+    - _MetallicTint: 0
     - _Mode: 0
+    - _Modulate128: 0
+    - _NoDither: 0
     - _NormalMapDepth: 1
     - _NormalStrength: 1
     - _OcclusionStrength: 1
     - _PSX_DIFF: 0
     - _PSX_SPEC: 0
     - _Parallax: 0.02
+    - _ReflectionIntensity: 1
     - _RenderMode: 0
     - _Shininess: 20
-    - _Smoothness: 0.5
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SnapScale: 1
     - _SpecModel: 0

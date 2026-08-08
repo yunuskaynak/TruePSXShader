@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.RenderGraphModule.Util;
@@ -64,6 +65,28 @@ namespace PSX
                 mat.SetVector(Params2Id, new Vector4(crt, vig, red, hasDepth ? 1f : 0f));
             }
 
+            /// <summary>
+            /// PSX/Lit her piksele "dither uygunlugu" bayragini alpha kanalinda
+            /// yazar (donanim kurali: yalnizca gouraud/modulasyonlu poligonlar
+            /// dither alir). Dusuk cozunurluk hedefinde alpha yoksa bu maske
+            /// kaybolur, bu yuzden alpha-kapasiteli bir formata gecilir.
+            /// Kamera renk hedefinde alpha yoksa maske 1 okunur ve eski
+            /// davranis (her seyi dither'la) korunur.
+            /// </summary>
+            static void EnsureAlphaChannel(ref RenderTextureDescriptor desc, bool hdr)
+            {
+                if (desc.graphicsFormat != GraphicsFormat.None &&
+                    GraphicsFormatUtility.HasAlphaChannel(desc.graphicsFormat))
+                    return;
+
+                GraphicsFormat target = hdr
+                    ? GraphicsFormat.R16G16B16A16_SFloat
+                    : GraphicsFormat.R8G8B8A8_UNorm;
+
+                if (SystemInfo.IsFormatSupported(target, GraphicsFormatUsage.Render))
+                    desc.graphicsFormat = target;
+            }
+
             // ----------------------------------------------------------
             //  Render Graph yolu (Unity 6 varsayilani)
             // ----------------------------------------------------------
@@ -88,6 +111,7 @@ namespace PSX
                 lowDesc.depthBufferBits = 0;
                 lowDesc.msaaSamples = 1;
                 lowDesc.useMipMap = false;
+                EnsureAlphaChannel(ref lowDesc, cameraData.isHdrEnabled);
 
                 bool useHistory = cameraData.cameraType == CameraType.Game && mgr.frameHold > 0;
                 bool refresh = true;

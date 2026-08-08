@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _PSX_DIFF_VERTEX
+  - _NORMALMAP
+  - _PSX_DIFF_FRAGMENT
   - _PSX_SPEC_GOURAUD
   m_InvalidKeywords:
   - DIFF_FRAGMENT
@@ -22,14 +23,16 @@ Material:
   - _DRAWDISTINFLUENCE_ON
   - _DRAWDIST_ON
   - _EMISSION
+  - _METALUNLIT_ON
   - _NORMAL_MAP
   - _SPECMODEL_GOURAUD
   - _VERTEXCOLORS_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -79,6 +82,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 2800000, guid: e275a95de56ac134cbecbfe9dfb96500, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -98,6 +105,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AffineOverride: -1
+    - _AffineShading: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _CubeAmount: 0.5
@@ -115,14 +123,19 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LODAmt: 15
+    - _MetalUnlit: 1
     - _Metallic: 0
+    - _MetallicTint: 1
     - _Mode: 0
+    - _Modulate128: 0
+    - _NoDither: 0
     - _NormalMapDepth: 1
     - _NormalStrength: 1
     - _OcclusionStrength: 1
-    - _PSX_DIFF: 0
+    - _PSX_DIFF: 1
     - _PSX_SPEC: 0
     - _Parallax: 0.02
+    - _ReflectionIntensity: 1
     - _RenderMode: 0
     - _Shininess: 20
     - _Smoothness: 0.5
